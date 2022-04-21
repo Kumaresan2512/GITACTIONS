@@ -27,12 +27,6 @@ jobs:
         include:
           - TEST_NAME: "Latest v2"
             AWS_CLI_VERSION: "2"
-          - TEST_NAME: "Specific v2"
-            AWS_CLI_VERSION: "2.0.30"
-          - TEST_NAME: "Latest v1"
-            AWS_CLI_VERSION: "1"
-          - TEST_NAME: "Specific v1"
-            AWS_CLI_VERSION: "1.18.1"
           - TEST_NAME: "No Input"
      name: Test ${{ matrix.TEST_NAME }} ${{ matrix.AWS_CLI_VERSION }}
      steps:
@@ -48,8 +42,12 @@ jobs:
      runs-on: ubuntu-latest
      steps:
      - name: Publish Report
-       run: |
+       id: install-aws-cli
+       uses: unfor19/install-aws-cli-action@master
+       with:
+          version: 2.5.6
+     - run: |
            aws_resp=$(aws devicefarm get-run --arn arn:aws:devicefarm:us-west-2:613203822881:run:9bf35c1e-ee79-42f2-b7d3-74a976d95dcb/98616d95-b866-4860-ad9d-77e22c4dc8b3 | jq '.run.result')
            echo ${aws_resp}
            echo aws devicefarm get-run --arn arn:aws:devicefarm:us-west-2:613203822881:run:9bf35c1e-ee79-42f2-b7d3-74a976d95dcb/98616d95-b866-4860-ad9d-77e22c4dc8b3
-
+       shell: bash
