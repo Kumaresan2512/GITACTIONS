@@ -1,4 +1,4 @@
-name: "examples"
+name: "example"
 on: [push]
 
 jobs:
